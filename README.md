@@ -1,75 +1,117 @@
-# React + TypeScript + Vite
+# Ecommerce Customer App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, responsive ecommerce customer-facing application built with React 19, TypeScript, and Tailwind CSS.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- 🛍️ Browse products with search, filter, and sort
+- 🏷️ Category-based navigation
+- 🛒 Cart management (backend-synced)
+- 💳 Checkout with Razorpay payment integration
+- 📦 Order tracking and history
+- ⭐ Product reviews (after delivery)
+- 👤 User profile with address management
+- 🔐 Auth with email/password and Google OAuth
+- 📱 Fully responsive design
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+- **React 19** with TypeScript
+- **Vite** — build tool
+- **Tailwind CSS** — styling
+- **Redux Toolkit** — auth state management
+- **TanStack React Query** — server state and caching
+- **Axios** — HTTP client with interceptors
+- **React Router v6** — routing
+- **Razorpay** — payment gateway
 
-Note: This will impact Vite dev & build performances.
+## Getting Started
 
-## Expanding the ESLint configuration
+### Prerequisites
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Node.js 18+
+- Backend API running (see [Ecommerce Backend](https://github.com/ragesh-j/Ecommerce))
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Installation
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+```bash
+# Clone the repo
+git clone https://github.com/ragesh-j/Ecommerce-customer.git
+cd Ecommerce-customer
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Install dependencies
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Environment Variables
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Create a `.env` file in the root:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```env
+VITE_API_URL=http://localhost:3000/api/v1
+VITE_SELLER_URL=http://localhost:5174
 ```
+
+### Development
+
+```bash
+npm run dev
+```
+
+App runs at `http://localhost:5175`
+
+### Production Build
+
+```bash
+npm run build
+npm run preview
+```
+
+## Project Structure
+
+```
+src/
+├── app/              # Redux store and hooks
+├── features/
+│   ├── auth/         # Auth slice (token, user)
+│   └── cart/         # Cart slice
+├── pages/            # Page components
+│   ├── Home.tsx
+│   ├── Products.tsx
+│   ├── ProductDetail.tsx
+│   ├── Cart.tsx
+│   ├── Checkout.tsx
+│   ├── Orders.tsx
+│   ├── Profile.tsx
+│   ├── Login.tsx
+│   ├── Register.tsx
+│   └── AuthCallback.tsx
+├── components/
+│   ├── Layout.tsx
+│   └── ProtectedRoute.tsx
+├── services/         # API service functions
+├── hooks/            # Custom hooks
+└── routes/           # Router setup
+```
+
+## Authentication
+
+- Email/password registration and login
+- Google OAuth with redirect callback
+- Access token stored in memory (Redux)
+- Refresh token in httpOnly cookie
+- Auto token refresh on expiry
+
+## Payment Flow
+
+1. User selects address and clicks "Place order"
+2. Backend validates cart and creates Razorpay order
+3. Razorpay popup opens
+4. User pays → backend creates order + deducts stock
+5. User dismisses → nothing created in DB
+
+## Related Projects
+
+- [Backend API](https://github.com/ragesh-j/Ecommerce)
+- [Admin Panel](https://github.com/ragesh-j/Ecommerce-admin)
+- [Seller Dashboard](https://github.com/ragesh-j/Ecommerce-seller)
